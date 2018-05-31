@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
 using SportsStore.Domain.Entities;
 
-namespace SportsStore.Domain.Concrete 
+namespace SportsStore.Domain.Concrete
 {
-    class EFDbContext : System.Data.Entity.DbContext
+    using System;
+    using System.Data.Entity;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+
+    public partial class EFDbContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        public EFDbContext()
+            : base("name=EFDbContext")
+        {
+        }
+
+        
+        public virtual DbSet<Product> Products { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+        }
     }
 }
