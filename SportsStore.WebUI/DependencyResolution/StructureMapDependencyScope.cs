@@ -20,11 +20,12 @@ namespace SportsStore.WebUI.DependencyResolution {
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
-
+    using System.Configuration;
     using Microsoft.Practices.ServiceLocation;
     using Moq;
     using SportsStore.Domain.Abstract;
     using SportsStore.Domain.Entities;
+    using SportsStore.Domain.Concrete;
     using StructureMap;
 	
     /// <summary>
@@ -44,22 +45,27 @@ namespace SportsStore.WebUI.DependencyResolution {
                 throw new ArgumentNullException("container");
             }
             Container = container;
-            //AddBindings(container);
+            AddBindings(container);
         }
 
         #endregion
 
         private void AddBindings(IContainer container)
         {
-            Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns(new List<Product>
-            {
-                new Product {Name = "Football", Price = 25},
-                new Product {Name = "Surf board", Price = 179},
-                new Product {Name = "Running shoes", Price = 95}
+            //Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            //mock.Setup(m => m.Products).Returns(new List<Product>
+            //{
+            //    new Product {Name = "Football", Price = 25},
+            //    new Product {Name = "Surf board", Price = 179},
+            //    new Product {Name = "Running shoes", Price = 95}
 
-            });
-            container.Inject<IProductRepository>(mock.Object);
+            //});
+            //container.Inject<IProductRepository>(mock.Object);
+
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
+            };
 
 
         }
